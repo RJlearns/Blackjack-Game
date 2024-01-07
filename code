@@ -1,0 +1,90 @@
+############### Our Blackjack House Rules #####################
+
+## The deck is unlimited in size. 
+## There are no jokers. 
+## The Jack/Queen/King all count as 10.
+## The the Ace can count as 11 or 1.
+## Use the following list as the deck of cards:
+## cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+## The cards in the list have equal probability of being drawn.
+## Cards are not removed from the deck as they are drawn.
+## The computer is the dealer.
+
+##########################################
+import random
+import blackjackLogo
+
+
+def deal_cards():
+    cards = [11,2,3,4,5,6,7,8,9,10,10,10,10]
+    random.shuffle(cards)
+    return random.choice(cards)
+
+
+def calculate_score(cards):
+    if sum(cards) == 21 and len(cards) == 0:
+        return 0
+    if 11 in cards and sum >= 22:
+        cards.remove(11)
+        cards.append(1)
+    return sum(cards)
+
+def to_continue():   
+    print(blackjackLogo.logo)
+    user_cards = []
+    comp_cards = []
+    
+    for i in range(2):
+        user_cards.append(deal_cards())
+        comp_cards.append(deal_cards())
+    
+    print(f"You cards are {user_cards}")
+    print(f"The Computers cards are {comp_cards[0]} ")
+    
+    
+    uc_total = calculate_score(user_cards)
+    cc_total = calculate_score(comp_cards)
+    
+    if uc_total or cc_total == '21':
+        if uc_total == '21':
+            print("user won")
+        elif cc_total == '21':
+            print("Computer has won")
+                
+    opinion = input("Do you want to play, type 'y' else type 'n' ")            
+    
+                
+    if opinion == 'n':
+        comp_cards.append(deal_cards())
+        cc_total = sum(comp_cards)
+        if cc_total > 21:
+            print("You Won")
+        elif cc_total > uc_total:
+            print("computer has won")
+        elif cc_total < uc_total:
+            print("You Won !")
+        else:
+            print("The game has been a Draw")
+    
+    if opinion =='y':
+        user_cards.append(deal_cards())
+        uc_total = calculate_score(user_cards)
+        
+        if cc_total > 21:
+            print("You Won")
+        elif uc_total > 21:
+            print("You Lost")
+        elif cc_total > uc_total:
+            print("computer has won")
+        elif cc_total < uc_total:
+            print("You Won !")
+        else:
+            print("The game has been a Draw")
+    print(user_cards)
+    print(comp_cards)    
+
+to_continue()
+_continue = input("Do you want to continue playing, type 'y' else type 'n' ")
+
+while _continue == 'y':
+    to_continue()
